@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, Markup
+from flask import Flask, render_template, request, jsonify, Markup, Response
 import json
 import os
 import sqlite3 #Database management library we used
@@ -68,14 +68,15 @@ def pivot_table_builder():
             filterName = dic['filterName']
             filterQuery = dic['filterQuery']
             aggregationOf = dic['aggregationOf']
-            aggregationOf = dic['aggregationCol']
+            aggregationCol = dic['aggregationCol']
         except KeyError:
             raise RuntimeError('Wrong input')
-        
-        return render_template('pivot_table_builder')
-        
-    
-    
+
+            
+        print(aggregationOf)
+
+        return render_template('pivot_table.html')
+            
     return render_template('pivot_table_builder.html')
 
 @app.route("/interesting_sights.html")

@@ -16,7 +16,7 @@
 
     <div class="container" id="pivot_table">
         <div class="pivot_table">
-
+            {{pivot_table}}
             <img src="images/pivot_table_builder.svg" alt="Pensils">
             <h1>Pivot Table Builder</h1>
             <div class="error_message"></div>
@@ -121,7 +121,8 @@
                                 </ul>
                             </div>
                             <div id="aggregation" class="tab-pane fade">
-
+                                <h3>Aggregation</h3>
+                                <p>Collection</p>
                                 <!--Filter Pannel-->
                                 <ul class="nav nav-pills">
                                     <li>
@@ -201,25 +202,25 @@
                 // submit
                 function submit_para(event) {
                     $.ajax({
-                            url: '/pivot_table_builder.html'
-                            , type: 'POST'
-                            , data: dict
-                            , success: function () {
-                                alert("ok!");
-                            }
-                            , error: function (xhr) {
-                                $('.error_message').text("Invalid Input :(")
-                            }
+                        url: '/pivot_table_builder.html'
+                        , type: 'POST'
+                        , data: dict
+                        , success: function () {
+                            alert("ok!");
+                        }
+                        , error: function (xhr) {
+                            $('.error_message').text("Invalid Input :(")
+                        }
                     });
 
-                        event.preventDefault()
-                    }
+                    event.preventDefault()
+                }
 
-                    $(document).ready(
-                        function docInit() {
-                            $('#submit').click(submit_para); // call function ajaxRequest upon clicking
-                        }
-                    );
+                $(document).ready(
+                    function docInit() {
+                        $('#submit').click(submit_para); // call function ajaxRequest upon clicking
+                    }
+                );
             </script>
             <!--everything here-->
         </div>
