@@ -1,6 +1,7 @@
 <script src="/assets/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
 {% extends "navibar.html" %}
 {% set active_page = "interesting_sights" %}
 
@@ -19,7 +20,7 @@
 		<br></br>
 		<p><font size="3">The negative difference between import and export (total goods and services) of US international trade 2015 increase almost 14 times as 1992 which mean it create a huge gap between import and export.</font></p>
 	</div>
-	<div id="container" style="width:600px;height:300px" class="col-lg-6"></div>
+	<div id="container"></div>
 </div>
 
 <br></br>
@@ -41,8 +42,11 @@
 
 <div class="row">
 	<div class="col-lg-6">
+		<p><b><i>The balance of goods and the balance of services have two outright trends</i></b></p>
+		<br></br>
+		<p><font size="3">The balance of goods of US international trade increase negatively from -96897 to -759307.On the other side, the balance of services of US actually increase positively from 57685 to 219552.</font></p>
 	</div>
-	<div></div>
+	<div id="container2"></div>
 </div>
 
 <br></br>
@@ -51,114 +55,345 @@
 
 <div class="row">
 	<div class="col-lg-6">
+		<p><b><i>The negative balance of payments (percentage change) of US perform weirdly on 2001 and 2008</i></b></p>
+		<br></br>
+		<p><font size="3">The percentage change of negative balance of payments of US perform differently in these two special years, 2001 and 2008. According to our research, September 11 attacks (2001) and finance crisis (2008) which play a vital role of these changes.</font></p>
 	</div>
-	<div></div>
+	<div id="container3"></div>
 </div>
 
 <br></br>
 <br></br>
 <br></br>
+
+<p><b><i>Services play a more important role in imports rather than exports</i></b></p>
+<br></br>
+<p><font size="3">The ratio (exports services / exports total(goods plus services ) ) is 13 percent bigger than the ratio (imports services / imports total (goods plus service) in the past 23 years(taking all the average value from 1992 to 2015)</font></p>
 
 <div class="row">
-	<div class="col-lg-6">
-	</div>
-	<div></div>
+	<div id="container4"class="col-lg-6"></div>
+	<div id="container5"></div>
 </div>
-
-<br></br>
-<br></br>
-<br></br>
-
-<div class="row">
-	<div class="col-lg-6">
-	</div>
-	<div></div>
-</div>
-
 <script>
 $(function () {
-    var charts = new Highcharts.Chart({
+     var charts = new Highcharts.Chart({
         chart: {
-            renderTo: container,
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-			marginTop: 40,
-            type: 'pie'
-        },
+			renderTo:container2,
+			width:600
+		},
         title: {
-            text: 'Browser market shares January, 2015 to May, 2015'
+            text: 'Trend of good and service',
+            x: -20 //center
+        },
+        xAxis: {
+            categories: ['1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']
+        },
+        yAxis: {
+            title: {
+                text: 'Balance (million of dollars)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Goods',
+            data: [-96897, -132451, -165831, -174170, -191000, -198428, -248221, -337068, -446783, -422370, -475245, -541643,-664766,-782804,-837289,-821196,-832492,-509694,-648678,-740648,-741171,-702587,-741462,-759307]
+        }, {
+            name: 'Service',
+            data: [57685,62141,67338,77786,86935,90155,82081,78450,74266,60858,56290,47754,54882,68558,75573,115821,123765,125920,154020,192020,204398,224193,233138,219552]
+        }]
+    });
+});
+</script>
+<script>$(function () {
+     var charts = new Highcharts.Chart({
+        chart: {
+			renderTo: container,
+			width: 600,
+            type: 'column'
+        },
+        title: {
+            text: 'US negative balance of payments . 1992 to 2015'
+        },
+        subtitle: {
+            text: 'ASSUME 1992 is base year (100%).'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total percent compare to base year'
+            }
+
+        },
+        legend: {
+            enabled: false
         },
         plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                }
+            series: {
+                borderWidth: 0,
             }
         },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },
+
         series: [{
             name: 'Brands',
             colorByPoint: true,
             data: [{
-                name: 'MI',
-                y: 56.33
+                name: '1992',
+                y: 100,
             }, {
-                name: 'Chrome',
-                y: 24.03,
-                sliced: true,
-                selected: true
+                name: '1993',
+                y: 179,
             }, {
-                name: 'Firefox',
-                y: 10.38
-            }, {
-                name: 'Safari',
-                y: 4.77
-            }, {
-                name: 'Opera',
-                y: 0.91
-            }, {
-                name: 'Proprietary or Undetectable',
-                y: 0.2
-            }]
+                name: '1994',
+                y: 251,
+            },  {
+                name: '1995',
+                y: 246,
+            },  {
+                name: '1996',
+                y: 265,
+            },  {
+                name: '1997',
+                y: 276,
+            },  {
+                name: '1998',
+                y: 424,
+            },  {
+                name: '1999',
+                y: 660,
+            },  {
+                name: '2000',
+                y: 950,
+            },  {
+                name: '2001',
+                y: 922,
+            },  {
+                name: '2002',
+                y: 1068,
+            },  {
+                name: '2003',
+                y: 1260,
+            },  {
+                name: '2004',
+                y: 1555,
+            },  {
+                name: '2005',
+                y: 1821,
+            },  {
+                name: '2006',
+                y: 1943,
+            },  {
+                name: '2007',
+                y: 1799,
+            },  {
+                name: '2008',
+                y: 1807,
+            },  {
+                name: '2009',
+                y: 979,
+            },  {
+                name: '2010',
+                y: 1261,
+            },  {
+                name: '2011',
+                y: 1399,
+            },  {
+                name: '2012',
+                y: 1369,
+            },  {
+                name: '2013',
+                y: 1220,
+            },  {
+                name: '2014',
+                y: 1296,
+            },  {
+                name: '2015',
+                y: 1377,
+            }, ]
+        }]
+    });
+});
+</script>
+<script>$(function () {
+    var charts = new Highcharts.Chart({
+        chart: {
+			renderTo: container1,
+			width: 600,
+            type: 'column'
+        },
+        title: {
+            text: 'Total balance from 1992 - 2015'
+        },
+		subtitle:{
+			text: 'six years as a unit'
+		},
+        xAxis: {
+            categories: ['1992-1997', '1998-2003', '2004-2009', '2010-2015']
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Service',
+            data: [442040, 399699, 564519, 1227321]
+        }, {
+            name: 'Goods',
+            data: [-958777, -2471330, -4448241, -4333851]
+        }, {
+            name: 'Total',
+            data: [-516738, -2071630, -3883719, -3106529]
+        },]
+    });
+});
+</script>
+<script>
+$(function () {
+    var charts = new Highcharts.Chart({
+        chart: {
+			renderTo: container3,
+			width:600,
+            type: 'spline'
+        },
+        title: {
+            text: ' negative balance of payments of US from 1992 to 2015'
+        },
+        subtitle: {
+            text: 'percentage change'
+        },
+        xAxis: {
+            categories: ['1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature'
+            },
+            labels: {
+                formatter: function () {
+                    return this.value + '°';
+                }
+            }
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    radius: 4,
+                    lineColor: '#666666',
+                    lineWidth: 1
+                }
+            }
+        },
+        series: [{
+            name: 'total balance',
+            marker: {
+                symbol: 'diamond'
+            },
+            data: [25.94, 79.3,40.08,-2.14,7.97,4.04,53.45,55.66,44.04,{y:-2.95,marker:{symbol:'url(images/boom.png)'}},15.89,17.88,23.48,17.11,6.64,-7.39,0.47,{y:-45.85,marker:{symbol:'url(images/boom.png)'}},28.9,10.91,10.91,-2.16,-10.88,6.26]
         }]
     });
 });
 </script>
 <script>
 $(function () {
-    var container = document.createElement('h1');
-
-    window.chart = new Highcharts.Chart({
-        chart: {
-            renderTo: container1,
-            height: 300,
-			marginTop: 60,
-			width: 600
-        },
-		title:{
-			text: 'just a graph'
-		},
-        xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        },
-
-        series: [{
-            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }]
-    });
+	var charts = new Highcharts.Chart({
+            chart: {
+				renderTo:container4,
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+				width:600,
+                type: 'pie'
+            },
+            title: {
+                text: 'percentage of average total goods and services exported'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                    name: 'Goods',
+                    y: 71
+                }, {
+                    name: 'Service',
+                    y: 29
+                }]
+            }]
+        });
 });
 </script>
-	
-
-
-
+<script>
+$(function () {
+	var charts = new Highcharts.Chart({
+            chart: {
+				renderTo:container5,
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+				width:600,
+                type: 'pie'
+            },
+            title: {
+                text: 'percentage of average total goods and services imported'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Brands',
+                data: [{
+                    name: 'Goods',
+                    y: 84
+                }, {
+                    name: 'Service',
+                    y: 16
+                }]
+            }]
+        });
+});
+</script>
 {% endblock %}
