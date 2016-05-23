@@ -1,12 +1,7 @@
-<!--pivot_table.html-->
-
 <link href="/assets/bootstrap.min.css" rel="stylesheet">
 
 <!--Navigation Bar-->
 {% extends "navibar.html" %} {% set active_page = "pivot_table_builder" %}
-
-
-
 
 <!--Table-->
 {% block body %}
@@ -16,16 +11,18 @@
 
     <div class="container" id="pivot_table">
         <div class="pivot_table">
-            {{pivot_table}}
             <img src="images/pivot_table_builder.svg" alt="Pensils">
-            <h1>Pivot Table Builder</h1>
             <div class="error_message"></div>
-
+            
+            <!--Pivot table generates here-->
+            <div class="table"></div>
+            
             <div class="panel panel-default">
-                <div class="panel-heading">Properties Selector</div>
                 <div class="panel-body">
                     <div class="container">
-                        <ul class="nav nav-pills">
+                        <h1>Pivot Table Builder</h1>
+                        <p>Choose valid properties for following three tabs to generate a pivot table</p>
+                        <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="pill" href="#filter_panel">Filter</a></li>
                             <li><a data-toggle="pill" href="#column_label">Column Label</a></li>
                             <li><a data-toggle="pill" href="#aggregation">Aggregation</a></li>
@@ -33,7 +30,7 @@
 
                         <div class="tab-content">
                             <div id="filter_panel" class="tab-pane fade in active">
-                                <h2>Filter</h2>
+                                <h3>Filter</h3>
                                 <p>Select filter to remove the data you don't need</p>
 
                                 <!--                        Filter Pannel-->
@@ -83,6 +80,13 @@
                                             </ul>
                                         </div>
                                     </li>
+                                    
+                                    <li>
+                                        <div>
+                                            <input type="text" class="form-control" id="filterValue">
+                                        </div>
+                                    </li>
+                                    
                                 </ul>
 
 
@@ -174,13 +178,12 @@
 
 
             <!--Dropdown-->
-            <div class="table">
-                {{table}}
-            </div>
             <p class="lead"></p>
 
             <button type='button' class='btn' id='submit'> submit </button>
             <script>
+                
+                // Every element
                 var dict = {};
 
                 // get dropdown auto change value
@@ -198,27 +201,33 @@
 
                     return false;
                 });
-
+                
+                function updateFilterValue() {
+                    dict['filterValue'] = document.getElementById("filterValue").value;
+                }
+                
                 // submit
+                
                 function submit_para(event) {
                     $.ajax({
                         url: '/pivot_table_builder.html'
                         , type: 'POST'
                         , data: dict
-                        , success: function () {
-                            alert("ok!");
+                        , success: function (responseData) {
+                            alert(responseData);
+                            $('.table').html(responseData)
                         }
-                        , error: function (xhr) {
+                        , error: function (errorMessage) {
                             $('.error_message').text("Invalid Input :(")
                         }
                     });
-
                     event.preventDefault()
                 }
 
                 $(document).ready(
                     function docInit() {
                         $('#submit').click(submit_para); // call function ajaxRequest upon clicking
+                        $('#filterValue').change(updateFilterValue);
                     }
                 );
             </script>
