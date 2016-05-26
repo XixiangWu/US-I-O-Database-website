@@ -5,7 +5,6 @@ body {
 .pivot_table {
     padding-top: 50px;
     text-align: center;
-
 }
 
 .nav-tabs > li,
@@ -20,7 +19,7 @@ body {
     text-align: center;
 }
 
-.container {
+#innerpanel {
     width: 90%;
 }
 
@@ -43,3 +42,4 @@ body {
     font-size: 25px;
     color: red;
 }
+

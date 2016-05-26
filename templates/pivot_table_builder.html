@@ -15,11 +15,11 @@
             <div class="error_message"></div>
             
             <!--Pivot table generates here-->
-            <div class="table"></div>
+            <div class="table" id="generated_table"></div>
             
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="container">
+                    <div class="container" id="innerpanel">
                         <h1>Pivot Table Builder</h1>
                         <p>Choose valid properties for following three tabs to generate a pivot table</p>
                         <ul class="nav nav-tabs">
@@ -214,11 +214,12 @@
                         , type: 'POST'
                         , data: dict
                         , success: function (responseData) {
-                            alert(responseData);
-                            $('.table').html(responseData)
+                            $('.table').html(responseData);
+                            $('table').dataTable();
+                            alert("Done!");
                         }
                         , error: function (errorMessage) {
-                            $('.error_message').text("Invalid Input :(")
+                            $('.error_message').html("Invalid Input :(")
                         }
                     });
                     event.preventDefault()
