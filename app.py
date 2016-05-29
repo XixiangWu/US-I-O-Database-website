@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, jsonify, Markup, Response
+import numpy as np
+import seaborn as sns
 import json
 import os
 import sqlite3 #Database management library we used
@@ -11,11 +13,11 @@ import pandas as pd
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 # Handler
-@app.route("/home.html")
+@app.route("/home")
 def index():
     return render_template('home.html')
 
-@app.route("/pivot_table.html")
+@app.route("/pivot_table")
 def pivot_table():
 
     # Process the Database
@@ -39,27 +41,18 @@ def html_table(c):
 
 
 
-
-
-
-@app.route("/pivot_table_builder.html", methods = ['POST','GET'])
+@app.route("/pivot_table_builder", methods = ['POST','GET'])
 def pivot_table_builder():
     if request.method == 'POST':
-                
-        # e.g. ImmutableMultiDict([('colLabel', u'Export Inc/Dec'), ('filterName', u'Service Balance'), ('aggregationOf', u'Minimum of'), ('aggregationCol', u'Service Balance'), ('filterQuery', u'<')])
+        
         dic = request.form
-
+        
         # Check Validation
         if len(dic)!=6:
             raise ValueError
         else:
             table_block = build_table(request.form)
-            return table_block.replace('border="1"','border="0"')
-        
-        
-        # Everything seems right, start process data
-        return dic['filterValue']
-        
+            return table_block
             
     return render_template('pivot_table_builder.html')
 
@@ -72,22 +65,36 @@ def build_table(dic):
     aggregationCol = dic['aggregationCol']
     
     conn = sqlite3.connect('USIODB.db')
+    if (filterQuery == 'contains'):
+        sql = "SELECT Period,{},{} FROM USIODB WHERE {} LIKE '%{}%' ".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterValue.strip())
+    elif (filterQuery == 'does not contatain'):
+        sql = "SELECT Period,{},{} FROM USIODB WHERE {} NOT LIKE '%{}%'".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterValue.strip())
+    else:    
+        sql = "SELECT Period,{},{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterQuery,filterValue)
+
+    sql+=" GROUP BY {}".format(to_valid_query(aggregationCol))
     
-    sql = "SELECT Period,{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),to_valid_query(filterName),filterQuery,filterValue)
+    cm = sns.light_palette("green", as_cmap=True)
     
-    df = pd.read_sql_query(sql, conn)
-    
-    print(sql)
-    
+    df = (pd.read_sql_query(sql, conn) 
+            .loc[:4] 
+            .style 
+            .background_gradient(cmap='viridis', low=.5, high=0) 
+            .highlight_null('red')
+            .background_gradient(cmap=cm)
+    )
     conn.close()
-    return df.to_html()
+
+    print(df)
+
+    return df.render()
     
 
 def to_valid_query(x):
     return {
         'Period' : 'Period',
-        'Total Balance' : 'TotalBalance',
-        'Goods Balance' : 'GoodsBalance',
+        'Total Balance' : 'Total_Balance',
+        'Goods Balance' : 'Goods_Balance',
         'Service Balance' : 'Services_Balance',
         'Total Exports' : 'Total_Exports',
         'Export Inc/Dec' : 'Export_Inc_Dec',
@@ -99,7 +106,7 @@ def to_valid_query(x):
         'Services Imports' : 'Services_Imports'
     }[x]
 
-@app.route("/interesting_sights.html")
+@app.route("/interesting_sights")
 def interesting_sights():
     return render_template('interesting_sights.html')
 	

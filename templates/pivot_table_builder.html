@@ -75,8 +75,6 @@
                                                 <li><a href="#">!=</a></li>
                                                 <li><a href="#">contains</a></li>
                                                 <li><a href="#">does not contatain</a></li>
-                                                <li><a href="#">is True</a></li>
-                                                <li><a href="#">is False</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -154,18 +152,8 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" id="aggregationCol" role="menu">
-                                                <li><a href="#">Period</a></li>
-                                                <li><a href="#">Total Balance</a></li>
-                                                <li><a href="#">Goods Balance</a></li>
-                                                <li><a href="#">Service Balance</a></li>
-                                                <li><a href="#">Total Exports</a></li>
                                                 <li><a href="#">Export Inc/Dec</a></li>
-                                                <li><a href="#">Goods Exports</a></li>
-                                                <li><a href="#">Services Exports</a></li>
-                                                <li><a href="#">Total Imports</a></li>
                                                 <li><a href="#">Import Inc/Dec</a></li>
-                                                <li><a href="#">Goods Imports</a></li>
-                                                <li><a href="#">Services Imports</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -198,7 +186,6 @@
                         .find('[data-bind="label"]').text($target.text())
                         .end()
                         .children('.dropdown-toggle').dropdown('toggle');
-
                     return false;
                 });
                 
@@ -210,12 +197,13 @@
                 
                 function submit_para(event) {
                     $.ajax({
-                        url: '/pivot_table_builder.html'
+                        url: '/pivot_table_builder'
                         , type: 'POST'
                         , data: dict
                         , success: function (responseData) {
                             $('.table').html(responseData);
                             $('table').dataTable();
+                            $('.error_message').html("")
                             alert("Done!");
                         }
                         , error: function (errorMessage) {

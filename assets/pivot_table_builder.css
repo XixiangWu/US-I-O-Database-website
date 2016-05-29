@@ -20,7 +20,7 @@ body {
 }
 
 #innerpanel {
-    width: 90%;
+    width: 95%;
 }
 
 .panel {
@@ -43,3 +43,7 @@ body {
     color: red;
 }
 
+.table {
+    vertical-align: middle;
+    display: inline-block;
+}
