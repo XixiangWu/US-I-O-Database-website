@@ -202,12 +202,11 @@
                         , data: dict
                         , success: function (responseData) {
                             $('.table').html(responseData);
-                            $('table').dataTable();
+                            $('table').dataTable({bFilter: false, bInfo: false});
                             $('.error_message').html("")
-                            alert("Done!");
                         }
                         , error: function (errorMessage) {
-                            $('.error_message').html("Invalid Input :(")
+                            $('.error_message').html("Invalid Input (Check if your Query returns empty data)")
                         }
                     });
                     event.preventDefault()
