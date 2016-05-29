@@ -1,12 +1,7 @@
-<!--pivot_table.html-->
-
 <link href="/assets/bootstrap.min.css" rel="stylesheet">
 
 <!--Navigation Bar-->
 {% extends "navibar.html" %} {% set active_page = "pivot_table_builder" %}
-
-
-
 
 <!--Table-->
 {% block body %}
@@ -16,16 +11,18 @@
 
     <div class="container" id="pivot_table">
         <div class="pivot_table">
-
             <img src="images/pivot_table_builder.svg" alt="Pensils">
-            <h1>Pivot Table Builder</h1>
             <div class="error_message"></div>
-
+            
+            <!--Pivot table generates here-->
+            <div class="table" id="generated_table"></div>
+            
             <div class="panel panel-default">
-                <div class="panel-heading">Properties Selector</div>
                 <div class="panel-body">
-                    <div class="container">
-                        <ul class="nav nav-pills">
+                    <div class="container" id="innerpanel">
+                        <h1>Pivot Table Builder</h1>
+                        <p>Choose valid properties for following three tabs to generate a pivot table</p>
+                        <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="pill" href="#filter_panel">Filter</a></li>
                             <li><a data-toggle="pill" href="#column_label">Column Label</a></li>
                             <li><a data-toggle="pill" href="#aggregation">Aggregation</a></li>
@@ -33,7 +30,7 @@
 
                         <div class="tab-content">
                             <div id="filter_panel" class="tab-pane fade in active">
-                                <h2>Filter</h2>
+                                <h3>Filter</h3>
                                 <p>Select filter to remove the data you don't need</p>
 
                                 <!--                        Filter Pannel-->
@@ -77,12 +74,17 @@
                                                 <li><a href="#">&lt;=</a></li>
                                                 <li><a href="#">!=</a></li>
                                                 <li><a href="#">contains</a></li>
-                                                <li><a href="#">does not contatain</a></li>
-                                                <li><a href="#">is True</a></li>
-                                                <li><a href="#">is False</a></li>
+                                                <li><a href="#">does not contain</a></li>
                                             </ul>
                                         </div>
                                     </li>
+                                    
+                                    <li>
+                                        <div>
+                                            <input type="text" class="form-control" id="filterValue">
+                                        </div>
+                                    </li>
+                                    
                                 </ul>
 
 
@@ -121,25 +123,10 @@
                                 </ul>
                             </div>
                             <div id="aggregation" class="tab-pane fade">
-
+                                <h3>Aggregation</h3>
+                                <p>Collection</p>
                                 <!--Filter Pannel-->
                                 <ul class="nav nav-pills">
-                                    <li>
-                                        <div class="aggregationOf">
-                                            <!--Filter name-->
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <span data-bind="label">Choose One</span>
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" id="aggregationOf" role="menu">
-                                                <li><a href="#">Count of</a></li>
-                                                <li><a href="#">Sum of</a></li>
-                                                <li><a href="#">Average of</a></li>
-                                                <li><a href="#">Minimum of</a></li>
-                                                <li><a href="#">Maximum of</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
                                     <!--Filter Query-->
 
                                     <li>
@@ -149,18 +136,8 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" id="aggregationCol" role="menu">
-                                                <li><a href="#">Period</a></li>
-                                                <li><a href="#">Total Balance</a></li>
-                                                <li><a href="#">Goods Balance</a></li>
-                                                <li><a href="#">Service Balance</a></li>
-                                                <li><a href="#">Total Exports</a></li>
                                                 <li><a href="#">Export Inc/Dec</a></li>
-                                                <li><a href="#">Goods Exports</a></li>
-                                                <li><a href="#">Services Exports</a></li>
-                                                <li><a href="#">Total Imports</a></li>
                                                 <li><a href="#">Import Inc/Dec</a></li>
-                                                <li><a href="#">Goods Imports</a></li>
-                                                <li><a href="#">Services Imports</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -173,13 +150,12 @@
 
 
             <!--Dropdown-->
-            <div class="table">
-                {{table}}
-            </div>
             <p class="lead"></p>
 
             <button type='button' class='btn' id='submit'> submit </button>
             <script>
+                
+                // Every element
                 var dict = {};
 
                 // get dropdown auto change value
@@ -194,32 +170,51 @@
                         .find('[data-bind="label"]').text($target.text())
                         .end()
                         .children('.dropdown-toggle').dropdown('toggle');
-
                     return false;
                 });
-
+                
+                function updateFilterValue() {
+                    dict['filterValue'] = document.getElementById("filterValue").value;
+                }
+                
                 // submit
+                
                 function submit_para(event) {
                     $.ajax({
-                            url: '/pivot_table_builder.html'
-                            , type: 'POST'
-                            , data: dict
-                            , success: function () {
-                                alert("ok!");
-                            }
-                            , error: function (xhr) {
-                                $('.error_message').text("Invalid Input :(")
-                            }
-                    });
-
-                        event.preventDefault()
-                    }
-
-                    $(document).ready(
-                        function docInit() {
-                            $('#submit').click(submit_para); // call function ajaxRequest upon clicking
+                        url: '/pivot_table_builder'
+                        , type: 'POST'
+                        , data: dict
+                        , success: function (responseData) {
+                            $('.table').html(responseData);
+                            $('table').dataTable(
+                                {bFilter: false, 
+                                 bInfo: false,
+                                 columns: [
+                                    { title: "" },
+                                    { title: "Period" },
+                                    { title: "Sum of "+dict["colLabel"] },
+                                    { title: "Average of "+dict["colLabel"] },
+                                    { title: "Maximum of "+dict["colLabel"] },
+                                    { title: "Minimum of "+dict["colLabel"] },
+                                    { title: dict["aggregationCol"] },
+                                 ]
+                                }
+                            );
+                            $('.error_message').html("")
                         }
-                    );
+                        , error: function (errorMessage) {
+                            $('.error_message').html("Invalid Input (Check if your Query returns empty data)")
+                        }
+                    });
+                    event.preventDefault()
+                }
+
+                $(document).ready(
+                    function docInit() {
+                        $('#submit').click(submit_para); // call function ajaxRequest upon clicking
+                        $('#filterValue').change(updateFilterValue);
+                    }
+                );
             </script>
             <!--everything here-->
         </div>

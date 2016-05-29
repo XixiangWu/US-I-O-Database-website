@@ -1,19 +1,14 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% set navigation_bar = [ ('/home', 'home', 'Home'), ('/pivot_table', 'pivot_table', 'Data Explorer'), ('/pivot_table_builder', 'pivot_table_builder', 'Pivot Table Builder'), ('/interesting_sights', 'interesting_sights', 'Interesting Sights') ] -%} {% set active_page = active_page|default('index') -%}
 
-{% set navigation_bar = [
-    ('/home.html', 'home', 'Home'),
-    ('/pivot_table.html', 'pivot_table', 'Pivot Table'),
-    ('/pivot_table_builder.html', 'pivot_table_builder', 'Pivot Table Builder'),
-    ('/interesting_sights.html', 'interesting_sights', 'Interesting Sights')
-] -%}
-{% set active_page = active_page|default('index') -%}
- 
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
@@ -23,14 +18,18 @@
     <!-- Bootstrap core CSS -->
     <script type="text/javascript" src="/assets/codemirror.js"></script>
     <link href="/assets/flat-ui.css" rel="stylesheet">
-    <link href="/assets/bootstrap.min.css" rel="stylesheet">
+<!--    <link href="/assets/bootstrap.min.css" rel="stylesheet">-->
     <link href="/assets/{{ active_page|e }}.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/javascript.js"></script>
 
-<!--    <link href="/assets/home.css" rel="stylesheet">-->
-  </head>
-   
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    
+</head>
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -40,15 +39,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="home.html">US I/O Database</a>
+            <a class="navbar-brand" href="home.html">US Exim Database</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-            {% for href, id, caption in navigation_bar %}
-                <li {% if id == active_page %} class="active"{% endif%}>
+                {% for href, id, caption in navigation_bar %}
+                <li {% if id==active_page %} class="active" {% endif%}>
                     <a href="{{ href|e }}">{{ caption|e }}</a>
                 </li>
-            {% endfor %}
+                {% endfor %}
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -56,19 +55,22 @@
 </nav>
 <!--Everthing here-->
 
-    <body>
+<body>
     <!-- /.container -->
-                    {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/assets/jquery.min.js"></script>
 
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+    <script>
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
     </script>
     <script src="/assets/bootstrap.min.js"></script>
-    </body>
-    
-<div></div><div></div></html>
+</body>
+
+<div></div>
+<div></div>
+
+</html>

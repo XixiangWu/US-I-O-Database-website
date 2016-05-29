@@ -8,6 +8,6 @@ body {
   text-align: center;
 }
 
-.table {
-  padding-top: 20px;
+table {
+    width: 80%;
 }

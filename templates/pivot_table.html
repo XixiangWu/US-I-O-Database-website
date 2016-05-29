@@ -2,19 +2,37 @@
 
 
 <!--Navigation Bar-->
-{% extends "navibar.html" %}
-{% set active_page = "pivot_table" %}
-      
+{% extends "navibar.html" %} {% set active_page = "pivot_table" %}
+
 <!--Table-->
 {% block body %}
 <div class="container">
     <div class="pivot_table">
         <h1>Pivot Table</h1>
-        <div class="table">
-            {{table}}
-        </div>
+        {{table}}
         <p class="lead"></p>
 
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.table').dataTable( {
+            columns: [
+                { title: "" },
+                { title: "Period" },
+                { title: "Total Balance" },
+                { title: "Goods Balance" },
+                { title: "Services Balance" },
+                { title: "Total Exports" },
+                { title: "Export Inc/Exp" },
+                { title: "Goods Exports" },
+                { title: "Services Exports" },
+                { title: "Total Imports" },
+                { title: "Import Inc/Exp" },
+                { title: "Goods Imports" },
+                { title: "Services Imports" }
+             ],
+        } );
+    });
+</script>
 {% endblock %}
