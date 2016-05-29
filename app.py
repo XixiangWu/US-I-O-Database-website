@@ -65,17 +65,23 @@ def build_table(dic):
     
     conn = sqlite3.connect('USIODB.db')
     if (filterQuery == 'contains'):
-        sql = "SELECT Period,{},{} FROM USIODB WHERE {} LIKE '%{}%' ".format(to_valid_query(colLabel),
-                                                                                to_valid_query(aggregationCol), 
+        sql = "SELECT Period,SUM({}),AVG({}),MAX({}),MIN({}),{} FROM USIODB WHERE {} LIKE '%{}%' ".format(to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(aggregationCol),
                                                                                 to_valid_query(filterName),
                                                                                 filterValue.strip())
     elif (filterQuery == 'does not contain'):
-        sql = "SELECT Period,{},{} FROM USIODB WHERE {} NOT LIKE '%{}%'".format(to_valid_query(colLabel),
-                                                                                to_valid_query(aggregationCol),
+        sql = "SELECT Period,SUM({}),AVG({}),MAX({}),MIN({}),{} FROM USIODB WHERE {} NOT LIKE '%{}%'".format(to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(aggregationCol),
                                                                                 to_valid_query(filterName),
                                                                                 filterValue.strip())
     else:    
-        sql = "SELECT Period,SUM({}) AS 'Sum of haha',AVG({}),MAX({}),MIN({}),{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),
+        sql = "SELECT Period,SUM({}),AVG({}),MAX({}),MIN({}),{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),
                                                                                  to_valid_query(colLabel),
                                                                                  to_valid_query(colLabel),
                                                                                  to_valid_query(colLabel),
