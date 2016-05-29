@@ -9,7 +9,13 @@
   font: 20px arial;
 }
 
-p{
+h3{
+  color:  #001a4d;
+  margin-left: 2cm;
+  margin-right: 2cm;
+}
+
+#text{
   color: #8585ad;
   padding-top: 40px;
   margin-left: 2cm;
@@ -20,8 +26,3 @@ h2{
   color:  #001a4d;
 }
 
-h3{
-  color:  #001a4d;
-  margin-left: 2cm;
-  margin-right: 2cm;
-}
