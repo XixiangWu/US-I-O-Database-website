@@ -61,7 +61,6 @@ def build_table(dic):
     filterName = dic['filterName']
     filterQuery = dic['filterQuery']
     filterValue = dic['filterValue']
-    aggregationOf = dic['aggregationOf']
     aggregationCol = dic['aggregationCol']
     
     conn = sqlite3.connect('USIODB.db')
@@ -89,7 +88,7 @@ def build_table(dic):
     
     print(sql)
     
-    cm = sns.light_palette("green", as_cmap=True)
+    cm = sns.light_palette("yellow", as_cmap=True)
     
     df = (pd.read_sql_query(sql, conn) 
             .loc[:4] 
