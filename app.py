@@ -13,7 +13,7 @@ import pandas as pd
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 # Handler
-@app.route("/home")
+@app.route("/")
 def index():
     return render_template('home.html')
 
