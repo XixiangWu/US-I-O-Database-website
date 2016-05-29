@@ -48,7 +48,7 @@ def pivot_table_builder():
         dic = request.form
         
         # Check Validation
-        if len(dic)!=6:
+        if len(dic)!=5:
             raise ValueError
         else:
             table_block = build_table(request.form)
@@ -66,13 +66,28 @@ def build_table(dic):
     
     conn = sqlite3.connect('USIODB.db')
     if (filterQuery == 'contains'):
-        sql = "SELECT Period,{},{} FROM USIODB WHERE {} LIKE '%{}%' ".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterValue.strip())
-    elif (filterQuery == 'does not contatain'):
-        sql = "SELECT Period,{},{} FROM USIODB WHERE {} NOT LIKE '%{}%'".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterValue.strip())
+        sql = "SELECT Period,{},{} FROM USIODB WHERE {} LIKE '%{}%' ".format(to_valid_query(colLabel),
+                                                                                to_valid_query(aggregationCol), 
+                                                                                to_valid_query(filterName),
+                                                                                filterValue.strip())
+    elif (filterQuery == 'does not contain'):
+        sql = "SELECT Period,{},{} FROM USIODB WHERE {} NOT LIKE '%{}%'".format(to_valid_query(colLabel),
+                                                                                to_valid_query(aggregationCol),
+                                                                                to_valid_query(filterName),
+                                                                                filterValue.strip())
     else:    
-        sql = "SELECT Period,{},{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),to_valid_query(aggregationCol),to_valid_query(filterName),filterQuery,filterValue)
+        sql = "SELECT Period,SUM({}) AS 'Sum of haha',AVG({}),MAX({}),MIN({}),{} FROM USIODB WHERE {} {} {}".format(to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(colLabel),
+                                                                                 to_valid_query(aggregationCol),
+                                                                                 to_valid_query(filterName),
+                                                                                 filterQuery,
+                                                                                 filterValue)
 
     sql+=" GROUP BY {}".format(to_valid_query(aggregationCol))
+    
+    print(sql)
     
     cm = sns.light_palette("green", as_cmap=True)
     
@@ -83,9 +98,9 @@ def build_table(dic):
             .highlight_null('red')
             .background_gradient(cmap=cm)
     )
+    
     conn.close()
 
-    print(df)
 
     return df.render()
     

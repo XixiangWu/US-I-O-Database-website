@@ -74,7 +74,7 @@
                                                 <li><a href="#">&lt;=</a></li>
                                                 <li><a href="#">!=</a></li>
                                                 <li><a href="#">contains</a></li>
-                                                <li><a href="#">does not contatain</a></li>
+                                                <li><a href="#">does not contain</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -134,13 +134,6 @@
                                                 <span data-bind="label">Choose One</span>
                                                 <span class="caret"></span>
                                             </button>
-                                            <ul class="dropdown-menu" id="aggregationOf" role="menu">
-                                                <li><a href="#">Count of</a></li>
-                                                <li><a href="#">Sum of</a></li>
-                                                <li><a href="#">Average of</a></li>
-                                                <li><a href="#">Minimum of</a></li>
-                                                <li><a href="#">Maximum of</a></li>
-                                            </ul>
                                         </div>
                                     </li>
                                     <!--Filter Query-->
@@ -202,7 +195,20 @@
                         , data: dict
                         , success: function (responseData) {
                             $('.table').html(responseData);
-                            $('table').dataTable({bFilter: false, bInfo: false});
+                            $('table').dataTable(
+                                {bFilter: false, 
+                                 bInfo: false,
+                                 columns: [
+                                    { title: "" },
+                                    { title: "Period" },
+                                    { title: "sum of "+dict["colLabel"] },
+                                    { title: "average of "+dict["colLabel"] },
+                                    { title: "maximum of "+dict["colLabel"] },
+                                    { title: "minimum of "+dict["colLabel"] },
+                                    { title: dict["aggregationCol"] },
+                                 ]
+                                }
+                            );
                             $('.error_message').html("")
                         }
                         , error: function (errorMessage) {
