@@ -12,6 +12,8 @@
     <div class="container" id="pivot_table">
         <div class="pivot_table">
             <img src="images/pivot_table_builder.svg" alt="Pensils">
+                    <h6>Unit: Million US Dollar</h6>
+
             <div class="error_message"></div>
             
             <!--Pivot table generates here-->
@@ -48,11 +50,9 @@
                                                 <li><a href="#">Goods Balance</a></li>
                                                 <li><a href="#">Service Balance</a></li>
                                                 <li><a href="#">Total Exports</a></li>
-                                                <li><a href="#">Export Inc/Dec</a></li>
                                                 <li><a href="#">Goods Exports</a></li>
                                                 <li><a href="#">Services Exports</a></li>
                                                 <li><a href="#">Total Imports</a></li>
-                                                <li><a href="#">Import Inc/Dec</a></li>
                                                 <li><a href="#">Goods Imports</a></li>
                                                 <li><a href="#">Services Imports</a></li>
                                             </ul>
@@ -196,6 +196,7 @@
                                     { title: "Average of "+dict["colLabel"] },
                                     { title: "Maximum of "+dict["colLabel"] },
                                     { title: "Minimum of "+dict["colLabel"] },
+                                    { title: "Count of "+dict["colLabel"] },
                                     { title: dict["aggregationCol"] },
                                  ]
                                 }
